@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		411D8DBA2D25FA6200BEC8E0 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 411D8DB92D25FA6200BEC8E0 /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		411D8CBF2D23727200BEC8E0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -81,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				411D8DBA2D25FA6200BEC8E0 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +146,7 @@
 			);
 			name = TicTomate;
 			packageProductDependencies = (
+				411D8DB92D25FA6200BEC8E0 /* Lottie */,
 			);
 			productName = TicTomate;
 			productReference = 411D8CAD2D23727000BEC8E0 /* TicTomate.app */;
@@ -224,6 +230,9 @@
 			);
 			mainGroup = 411D8CA42D23727000BEC8E0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				411D8DB82D25F9C300BEC8E0 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 411D8CAE2D23727000BEC8E0 /* Products */;
 			projectDirPath = "";
@@ -622,6 +631,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		411D8DB82D25F9C300BEC8E0 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		411D8DB92D25FA6200BEC8E0 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 411D8DB82D25F9C300BEC8E0 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 411D8CA52D23727000BEC8E0 /* Project object */;
 }
