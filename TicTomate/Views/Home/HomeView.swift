@@ -2,15 +2,17 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
+    @Namespace private var buttonNamespace
     let showSettings: () -> Void
     @Binding var showTimer: Bool
+    @State private var showStartWorkingOverlay = false
     
     var body: some View {
-        VStack {
+        let mainContent = VStack(spacing: 0) {
             // Header
             HStack {
                 Text("Tic & Tomate")
-                    .font(.headline)
+                    .font(.outfit(17, weight: .bold))
                 Spacer()
                 Button(action: showSettings) {
                     Image(systemName: "gear")
@@ -20,24 +22,56 @@ struct HomeView: View {
             .background(Color(.systemBackground))
             
             // Main content
-            VStack(spacing: 20) {
+            VStack(spacing: 8) {
                 StatsSection(stats: viewModel.stats)
-                
                 StreakSection(weeklyStreak: viewModel.stats.weeklyStreak)
-                
                 Spacer()
                 
-                Button(action: { showTimer = true }) {
-                    Text("Start Working")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(height: 50)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                if !showStartWorkingOverlay {
+                    StartWorkingButton(
+                        action: { 
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                showStartWorkingOverlay = true
+                            }
+                        },
+                        namespace: buttonNamespace,
+                        isOverlay: false
+                    )
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 30)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 30)
+            }
+            .padding(.horizontal, 16)
+        }
+        
+        ZStack {
+            // Background color
+            Color.black
+                .ignoresSafeArea()
+            
+            // Contenu principal
+            mainContent
+                .zIndex(1)
+                .opacity(showStartWorkingOverlay ? 0 : 1)
+            
+            // Overlay
+            if showStartWorkingOverlay {
+                StartWorkingOverlay(
+                    onStart: {
+                        withAnimation {
+                            showStartWorkingOverlay = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                showTimer = true
+                            }
+                        }
+                    },
+                    onDismiss: {
+                        showStartWorkingOverlay = false
+                    },
+                    namespace: buttonNamespace,
+                    rootView: AnyView(mainContent)
+                )
+                .zIndex(2)
             }
         }
     }
@@ -47,24 +81,34 @@ struct StatsSection: View {
     let stats: WorkStats
     
     var body: some View {
-        VStack(spacing: 15) {
-            Text("\(stats.todayMinutes)")
-                .font(.system(size: 72, weight: .light))
-            Text("minutes today")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+        VStack(spacing: 0) {
+            HStack(alignment: .center, spacing: 16) {
+               Text("\(stats.todayMinutes)")
+                   .font(.outfit(72, weight: .bold))
+               Text("minutes\ntoday")
+                    .font(.outfit(20, weight: .bold))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 8)
             
-            HStack(spacing: 30) {
+            HStack(spacing: 0) {
                 StatItem(value: stats.weekMinutes, label: "this week")
                 StatItem(value: stats.monthMinutes, label: "this month")
                 StatItem(value: stats.bestMonthMinutes, label: "so far")
             }
-            .padding(.top, 10)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 0)
+            .background(Color.white.opacity(0.05))
+            
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(15)
-        .padding(.horizontal)
+        .background(Color(.white.opacity(0.05)))
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+               .stroke(Color.white.opacity(0.1), lineWidth: 1)
+        )
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -75,11 +119,14 @@ struct StatItem: View {
     var body: some View {
         VStack(spacing: 5) {
             Text("\(value)")
-                .font(.headline)
+                .font(.outfit(25, weight: .bold))
+                .foregroundColor(.secondary)
             Text(label)
-                .font(.caption)
+                .font(.outfit(12))
                 .foregroundColor(.secondary)
         }
+        .frame(maxWidth: .infinity)
+        .padding(15)
     }
 }
 
@@ -88,33 +135,41 @@ struct StreakSection: View {
     let weekDays = ["S", "M", "T", "W", "T", "F", "S"]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("this week")
-                .font(.title2)
-                .padding(.horizontal)
+        VStack(spacing: 16) {
+            HStack() {
+               Text("this week")
+                   .font(.outfit(24, weight: .bold))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-            HStack(spacing: 20) {
+            HStack(spacing: 10) {
                 ForEach(0..<7) { index in
-                    VStack {
+                    VStack (spacing: 10) {
                         Circle()
-                            .stroke(isToday(index) ? Color.blue : Color.clear, lineWidth: 2)
+                            .stroke(isToday(index) ? Color.white : Color.clear, lineWidth: 2)
                             .background(
                                 Circle()
-                                    .fill(weeklyStreak[index] ? Color.green : Color(.systemGray5))
+                                    .fill(weeklyStreak[index] ? Color.white : Color.white.opacity(0.1))
                             )
-                            .frame(width: 40, height: 40)
+                            .frame(width: 30, height: 30)
                         
                         Text(weekDays[index])
-                            .font(.caption)
+                            .font(.outfit(12))
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
                 }
             }
-            .padding(.horizontal)
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(15)
-        .padding(.horizontal)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 24)
+        .background(Color(.white.opacity(0.05)))
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+               .stroke(Color.white.opacity(0.1), lineWidth: 1)
+        )
+        .frame(maxWidth: .infinity)
     }
     
     private func isToday(_ index: Int) -> Bool {
