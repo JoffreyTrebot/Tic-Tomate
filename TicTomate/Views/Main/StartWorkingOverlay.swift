@@ -6,18 +6,30 @@ struct StartWorkingOverlay: View {
     let namespace: Namespace.ID
     let rootView: AnyView
     
+    private let lottieURL = "https://lottie.host/aa3b6ae9-1f8b-4420-a167-c4f990770a5b/cMCSDGu08Y.json";
+    private let haptics = UIImpactFeedbackGenerator(style: .heavy)
+    
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
+            ZStack(alignment: .center) {
                 BackgroundBlurView(rootView: rootView)
                     .onTapGesture {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                             onDismiss()
                         }
                     }
                 
-                // Contenu
+                // Contenu centré
                 VStack(spacing: 24) {
+                    // Animation Lottie
+                    LottieView(
+                        url: lottieURL,
+                        size: CGSize(width: 80, height: 80),
+                        color: .white
+                    )
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.white)
+                    
                     Text("Turn your iPhone,\nand then it's time to work")
                         .font(.outfit(24, weight: .bold))
                         .multilineTextAlignment(.center)
@@ -25,14 +37,16 @@ struct StartWorkingOverlay: View {
                         .opacity(0.9)
                     
                     StartWorkingButton(
-                        action: onStart,
+                        action: {
+                            haptics.impactOccurred()
+                            onStart()
+                        },
                         namespace: namespace,
                         isOverlay: true
                     )
                 }
                 .padding(32)
             }
-            .frame(width: geometry.size.width, height: geometry.size.height)
         }
         .edgesIgnoringSafeArea(.all)
         .transition(.opacity)

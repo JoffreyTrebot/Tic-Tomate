@@ -6,6 +6,8 @@ struct HomeView: View {
     let showSettings: () -> Void
     @Binding var showTimer: Bool
     @State private var showStartWorkingOverlay = false
+
+    private let haptics = UIImpactFeedbackGenerator(style: .heavy)
     
     var body: some View {
         let mainContent = VStack(spacing: 0) {
@@ -30,7 +32,8 @@ struct HomeView: View {
                 if !showStartWorkingOverlay {
                     StartWorkingButton(
                         action: { 
-                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            haptics.impactOccurred()
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                                 showStartWorkingOverlay = true
                             }
                         },
