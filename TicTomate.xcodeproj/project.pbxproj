@@ -29,9 +29,38 @@
 		411D8CC82D23727200BEC8E0 /* TicTomateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicTomateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		411D8DAB2D24E09700BEC8E0 /* Exceptions for "TicTomate" folder in "TicTomateTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Resources/Fonts/Outfit-VariableFont_wght.ttf",
+			);
+			target = 411D8CBD2D23727200BEC8E0 /* TicTomateTests */;
+		};
+		411D8DAC2D24E09700BEC8E0 /* Exceptions for "TicTomate" folder in "TicTomateUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Resources/Fonts/Outfit-VariableFont_wght.ttf",
+			);
+			target = 411D8CC72D23727200BEC8E0 /* TicTomateUITests */;
+		};
+		411D8DAE2D24E3FE00BEC8E0 /* Exceptions for "TicTomate" folder in "TicTomate" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 411D8CAC2D23727000BEC8E0 /* TicTomate */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		411D8CAF2D23727000BEC8E0 /* TicTomate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				411D8DAE2D24E3FE00BEC8E0 /* Exceptions for "TicTomate" folder in "TicTomate" target */,
+				411D8DAB2D24E09700BEC8E0 /* Exceptions for "TicTomate" folder in "TicTomateTests" target */,
+				411D8DAC2D24E09700BEC8E0 /* Exceptions for "TicTomate" folder in "TicTomateUITests" target */,
+			);
 			path = TicTomate;
 			sourceTree = "<group>";
 		};
@@ -396,6 +425,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TicTomate/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -435,6 +465,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TicTomate/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
