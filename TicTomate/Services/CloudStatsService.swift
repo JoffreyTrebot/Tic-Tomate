@@ -4,7 +4,36 @@ class CloudStatsService {
     static let shared = CloudStatsService()
     private let defaults = UserDefaults.standard
     
-    private init() {}
+    private init() {
+        // Initialiser avec des données de démo si c'est la première fois
+        if !defaults.bool(forKey: "demo_data_initialized") {
+            initializeDemoData()
+        }
+    }
+    
+    private func initializeDemoData() {
+        // Données du jour
+        defaults.set(125, forKey: "today_minutes") // 2h05 de travail aujourd'hui
+        
+        // Données de la semaine (total: 8h45)
+        defaults.set(525, forKey: "week_minutes")
+        
+        // Données du mois (total: 35h20)
+        defaults.set(2120, forKey: "month_minutes")
+        
+        // Meilleur mois (42h15)
+        defaults.set(2535, forKey: "best_month_minutes")
+        
+        // Streak hebdomadaire (5 jours sur 7)
+        var weekStreak = [true, true, true, true, true, false, false]
+        defaults.set(weekStreak, forKey: "weekly_streak")
+        
+        // Streak actuel
+        defaults.set(5, forKey: "current_streak")
+        
+        // Marquer que les données de démo ont été initialisées
+        defaults.set(true, forKey: "demo_data_initialized")
+    }
     
     func saveWorkSession(minutes: Int) {
         let today = Calendar.current.startOfDay(for: Date())
@@ -24,12 +53,11 @@ class CloudStatsService {
     }
     
     func fetchStats() -> WorkStats {
-        let today = Calendar.current.startOfDay(for: Date())
         let todayMinutes = defaults.integer(forKey: "today_minutes")
-        let weekMinutes = calculateWeekMinutes()
-        let monthMinutes = calculateMonthMinutes()
+        let weekMinutes = defaults.integer(forKey: "week_minutes")
+        let monthMinutes = defaults.integer(forKey: "month_minutes")
         let bestMonthMinutes = defaults.integer(forKey: "best_month_minutes")
-        let weeklyStreak = getWeeklyStreak()
+        let weeklyStreak = defaults.array(forKey: "weekly_streak") as? [Bool] ?? Array(repeating: false, count: 7)
         let currentStreak = defaults.integer(forKey: "current_streak")
         
         return WorkStats(
