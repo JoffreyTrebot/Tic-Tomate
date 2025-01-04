@@ -10,32 +10,23 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var navigationState = NavigationState()
     @State private var showTimer = false
+    @State private var showSettings = false
     
     var body: some View {
-        HorizontalNavigationView(currentScreen: $navigationState.currentScreen) {
-            HStack(spacing: 0) {
+        ZStack {
+            if !showTimer {
                 HomeView(
                     showSettings: {
-                        withAnimation {
-                            navigationState.currentScreen = .settings
-                        }
+                        showSettings = true
                     },
                     showTimer: $showTimer
                 )
-                .frame(width: UIScreen.main.bounds.width)
-                
-                SettingsView(
-                    onBack: {
-                        withAnimation {
-                            navigationState.currentScreen = .home
-                        }
-                    }
-                )
-                .frame(width: UIScreen.main.bounds.width)
+            } else {
+                PomodoroView()
             }
         }
-        .fullScreenCover(isPresented: $showTimer) {
-            PomodoroView()
+        .sheet(isPresented: $showSettings) {
+            SettingsView(onBack: { showSettings = false })
         }
     }
 }

@@ -7,6 +7,7 @@ struct HomeView: View {
     @Binding var showTimer: Bool
     @State private var showStartWorkingOverlay = false
     @State private var showCountdown = false
+    @State private var showSmokeTransition = false
 
     private let haptics = UIImpactFeedbackGenerator(style: .heavy)
     
@@ -56,7 +57,7 @@ struct HomeView: View {
             // Contenu principal
             mainContent
                 .zIndex(1)
-                .opacity(showStartWorkingOverlay || showCountdown ? 0 : 1)
+                .opacity(showStartWorkingOverlay || showSmokeTransition || showCountdown ? 0 : 1)
             
             // Overlay
             if showStartWorkingOverlay {
@@ -64,9 +65,7 @@ struct HomeView: View {
                     onStart: {
                         withAnimation {
                             showStartWorkingOverlay = false
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                showCountdown = true
-                            }
+                            showSmokeTransition = true
                         }
                     },
                     onDismiss: {
@@ -76,12 +75,19 @@ struct HomeView: View {
                     rootView: AnyView(mainContent),
                     onStartCountdown: {
                         showStartWorkingOverlay = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            showCountdown = true
-                        }
+                        showSmokeTransition = true
                     }
                 )
                 .zIndex(2)
+            }
+            
+            // Smoke Transition
+            if showSmokeTransition {
+                SmokeTransitionView {
+                    showSmokeTransition = false
+                    showCountdown = true
+                }
+                .zIndex(3)
             }
             
             // Countdown
@@ -90,8 +96,8 @@ struct HomeView: View {
                     showCountdown = false
                     showTimer = true
                 }
-                .zIndex(3)
-                .transition(.opacity)
+                .zIndex(4)
+                .transition(.opacity.animation(.easeInOut(duration: 0.5)))
             }
         }
     }
