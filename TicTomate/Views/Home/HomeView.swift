@@ -100,6 +100,9 @@ struct HomeView: View {
                 .transition(.opacity.animation(.easeInOut(duration: 0.5)))
             }
         }
+        .onAppear {
+            OrientationService.shared.lockToPortrait()
+        }
     }
 }
 

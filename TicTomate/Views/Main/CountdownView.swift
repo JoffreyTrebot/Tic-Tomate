@@ -9,41 +9,44 @@ struct CountdownView: View {
     @State private var showReverseSmoke = false
     
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-            
-            if !showReverseSmoke {
-                if currentNumber > 0 {
-                    ZStack {
-                        // Numéro actuel
-                        Text("\(currentNumber)")
-                            .font(.system(size: 200, weight: .bold, design: .rounded))
-                            .foregroundColor(.white)
-                            .opacity(isAnimating ? 0 : 1)
-                            .scaleEffect(isAnimating ? 1.5 : 1)
-                            .blur(radius: isAnimating ? 20 : 0)
-                        
-                        // Prochain numéro
-                        if showNextNumber && nextNumber > 0 {
-                            Text("\(nextNumber)")
+        LandscapeView {
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                if !showReverseSmoke {
+                    if currentNumber > 0 {
+                        ZStack {
+                            // Numéro actuel
+                            Text("\(currentNumber)")
                                 .font(.system(size: 200, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
-                                .opacity(isAnimating ? 1 : 0)
-                                .scaleEffect(isAnimating ? 1 : 0.5)
-                                .blur(radius: isAnimating ? 0 : 20)
+                                .opacity(isAnimating ? 0 : 1)
+                                .scaleEffect(isAnimating ? 1.5 : 1)
+                                .blur(radius: isAnimating ? 20 : 0)
+                            
+                            // Prochain numéro
+                            if showNextNumber && nextNumber > 0 {
+                                Text("\(nextNumber)")
+                                    .font(.system(size: 200, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .opacity(isAnimating ? 1 : 0)
+                                    .scaleEffect(isAnimating ? 1 : 0.5)
+                                    .blur(radius: isAnimating ? 0 : 20)
+                            }
+                        }
+                        .onAppear {
+                            startCountdown()
                         }
                     }
-                    .onAppear {
-                        startCountdown()
+                } else {
+                    // Effet de fumée inverse
+                    ReverseSmokeTransitionView {
+                        onComplete()
                     }
-                }
-            } else {
-                // Effet de fumée inverse
-                ReverseSmokeTransitionView {
-                    onComplete()
                 }
             }
         }
+        .statusBar(hidden: true)
     }
     
     private func startCountdown() {
