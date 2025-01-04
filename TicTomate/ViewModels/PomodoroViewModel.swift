@@ -58,6 +58,12 @@ class PomodoroViewModel: ObservableObject {
         haptics.buttonTap()
     }
     
+    func start() {
+        isRunning = true
+        timer.start()
+        haptics.timerStart()
+    }
+    
     private func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let remainingSeconds = seconds % 60

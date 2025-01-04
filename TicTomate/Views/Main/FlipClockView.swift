@@ -13,14 +13,14 @@ struct FlipClockView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let size = min(geometry.size.width * 0.2, geometry.size.height * 0.4)
+            let size = min(geometry.size.width * 0.25, geometry.size.height * 0.5)
             
             HStack(spacing: size * 0.1) {
                 // Minutes
                 FlipDigitGroup(digits: minutes, digitSize: size)
                 
                 Text(":")
-                    .font(.system(size: size * 0.8, weight: .thin))
+                    .font(.outfit(size * 0.8, weight: .bold))
                     .foregroundColor(.primary)
                 
                 // Seconds
@@ -55,7 +55,7 @@ struct FlipDigit: View {
                 .frame(width: size, height: size * 1.5)
             
             Text(digit)
-                .font(.system(size: size, weight: .light, design: .rounded))
+                .font(.outfit(size, weight: .bold))
                 .foregroundColor(.primary)
         }
     }
