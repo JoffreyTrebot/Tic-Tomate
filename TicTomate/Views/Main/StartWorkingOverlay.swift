@@ -5,6 +5,7 @@ struct StartWorkingOverlay: View {
     let onDismiss: () -> Void
     let namespace: Namespace.ID
     let rootView: AnyView
+    let onStartCountdown: () -> Void
     
     private let lottieURL = "https://lottie.host/aa3b6ae9-1f8b-4420-a167-c4f990770a5b/cMCSDGu08Y.json";
     private let haptics = UIImpactFeedbackGenerator(style: .heavy)
@@ -39,7 +40,12 @@ struct StartWorkingOverlay: View {
                     StartWorkingButton(
                         action: {
                             haptics.impactOccurred()
-                            onStart()
+                            withAnimation {
+                                onDismiss()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    onStartCountdown()
+                                }
+                            }
                         },
                         namespace: namespace,
                         isOverlay: true

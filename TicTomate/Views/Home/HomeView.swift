@@ -6,6 +6,7 @@ struct HomeView: View {
     let showSettings: () -> Void
     @Binding var showTimer: Bool
     @State private var showStartWorkingOverlay = false
+    @State private var showCountdown = false
 
     private let haptics = UIImpactFeedbackGenerator(style: .heavy)
     
@@ -55,7 +56,7 @@ struct HomeView: View {
             // Contenu principal
             mainContent
                 .zIndex(1)
-                .opacity(showStartWorkingOverlay ? 0 : 1)
+                .opacity(showStartWorkingOverlay || showCountdown ? 0 : 1)
             
             // Overlay
             if showStartWorkingOverlay {
@@ -64,7 +65,7 @@ struct HomeView: View {
                         withAnimation {
                             showStartWorkingOverlay = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                showTimer = true
+                                showCountdown = true
                             }
                         }
                     },
@@ -72,9 +73,25 @@ struct HomeView: View {
                         showStartWorkingOverlay = false
                     },
                     namespace: buttonNamespace,
-                    rootView: AnyView(mainContent)
+                    rootView: AnyView(mainContent),
+                    onStartCountdown: {
+                        showStartWorkingOverlay = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            showCountdown = true
+                        }
+                    }
                 )
                 .zIndex(2)
+            }
+            
+            // Countdown
+            if showCountdown {
+                CountdownView {
+                    showCountdown = false
+                    showTimer = true
+                }
+                .zIndex(3)
+                .transition(.opacity)
             }
         }
     }
