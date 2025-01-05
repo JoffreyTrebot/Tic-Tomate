@@ -13,6 +13,11 @@ struct ContentView: View {
     @State private var showSettings = false
     
     var body: some View {
+        // Afficher directement PomodoroView pour le développement
+        PomodoroView()
+        
+        // Code original commenté pour référence
+        /*
         ZStack {
             if !showTimer {
                 HomeView(
@@ -28,6 +33,7 @@ struct ContentView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView(onBack: { showSettings = false })
         }
+        */
     }
 }
 

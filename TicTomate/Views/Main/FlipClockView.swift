@@ -21,12 +21,12 @@ struct FlipClockView: View {
                 
                 Text(":")
                     .font(.outfit(size * 0.8, weight: .bold))
-                    .foregroundColor(.primary)
+                    .foregroundColor(.primary.opacity(0.5))
                 
                 // Seconds
                 FlipDigitGroup(digits: seconds, digitSize: size)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity)
         }
     }
 }
@@ -50,12 +50,12 @@ struct FlipDigit: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: size * 0.1)
-                .fill(Color(.systemGray6))
-                .frame(width: size, height: size * 1.5)
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemGray6).opacity(0.8))
+                .frame(width: .infinity, height: .infinity)
             
             Text(digit)
-                .font(.outfit(size, weight: .bold))
+                .font(.outfit(200, weight: .bold))
                 .foregroundColor(.primary)
         }
     }
